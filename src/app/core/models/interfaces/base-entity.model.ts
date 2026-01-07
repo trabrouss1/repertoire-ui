@@ -2,7 +2,7 @@
  * Interface de base pour toutes les entités
  */
 export interface BaseEntity {
-  id?: number
+  id?: string
   createdAt?: string
   updatedAt?: string
   createdBy?: string
