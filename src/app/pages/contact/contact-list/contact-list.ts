@@ -1,7 +1,6 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
-import { ContactService } from '../../../core/services/contact/contact-service';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ContactModel } from '../../../core/models/interfaces/contact-model';
-import { PaginatedResponse } from '../../../core/models/interfaces/base-entity.model';
+import { ContactService } from '../../../core/services/contact/contact-service';
 
 @Component({
   selector: 'app-contact-list',
@@ -9,37 +8,21 @@ import { PaginatedResponse } from '../../../core/models/interfaces/base-entity.m
   templateUrl: './contact-list.html',
   styleUrl: './contact-list.css',
 })
-export class ContactList implements OnInit {
-  
+export class ContactList {
+
   private readonly contactService = inject(ContactService);
-  protected contacts = signal<ContactModel[]>([]);
 
-  @Output() editContact = new EventEmitter<string>();
-  @Output() deleteContact = new EventEmitter<string>();
-  @Input() contactsInput: ContactModel[] = [];
-  
-  ngOnInit(): void {
-    this.getAllContacts();
-  }
-  
-  getAllContacts(){
-    this.contactService.getAllContacts().subscribe({
-      next: (response: PaginatedResponse<ContactModel>) => {
-        this.contacts.set(response.data);
-        console.log(" contacts " + this.contacts);
-      },
-      error: (error) => {
-        console.error("Une erreur s\'est produite lors du chargement des contacts: ", error);
-      }
-    })
-  }
+  contacts = this.contactService.contacts;
 
+  
   modifierContact(id?: string) {
-    this.editContact.emit(id);
+    console.log("L'ID de l'élèment a modifier est : " + id);
   }
 
-  supprimerContact(id?: string) {
-    this.deleteContact.emit(id);
+  supprimerContact(id?: string): void {
+    console.log("L'ID de l'élèment a supprimé est : " + id);   
+    if (id) this.contactService.deleteContact(id);
+    
   }
 
 }

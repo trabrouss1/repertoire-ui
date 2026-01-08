@@ -8,22 +8,17 @@ import { ApiUrlBuilder } from '../../constants/api-url.builder';
 })
 export class MasterService {
 
-  /** 
-  * B => body
-  * R => return
-  */
-
   private readonly http = inject(HttpClient);
 
   /* ======================
   * GET
   * ====================== */
-  get<R>(
+  get<T>(
     controller: string,
     method?: string,
     params?: HttpParams
-  ): Observable<R> {
-    return this.http.get<R>(
+  ): Observable<T> {
+    return this.http.get<T>(
       ApiUrlBuilder.build(controller, method),
       { params }
     );
@@ -32,12 +27,12 @@ export class MasterService {
   /* ======================
   * POST
   * ====================== */
-  create<B, R>(
+  create<T>(
     controller: string,
     method: string,
-    body: B
-  ): Observable<R> {
-    return this.http.post<R>(
+    body: any
+  ): Observable<T> {
+    return this.http.post<T>(
       ApiUrlBuilder.build(controller, method),
       body
     );
@@ -46,13 +41,14 @@ export class MasterService {
   /* ======================
   * PUT
   * ====================== */
-  update<B, R>(
+  update<T>(
     controller: string,
     method: string,
-    body: B
-  ): Observable<R> {
-    return this.http.put<R>(
-      ApiUrlBuilder.build(controller, method),
+    id: string | number,
+    body: any
+  ): Observable<T> {
+    return this.http.put<T>(
+      ApiUrlBuilder.build(controller, method, [id]),
       body
     );
   }
@@ -60,13 +56,16 @@ export class MasterService {
   /* ======================
   * DELETE
   * ====================== */
-  delete<R>(
+  delete<T>(
     controller: string,
-    method: string
-  ): Observable<R> {
-    return this.http.delete<R>(
-      ApiUrlBuilder.build(controller, method)
+    method: string,
+    id: string | number,
+  ): Observable<T> {
+    return this.http.delete<T>(
+      ApiUrlBuilder.build(controller, method, [id]),
     );
   }
+
+  
 
 }
