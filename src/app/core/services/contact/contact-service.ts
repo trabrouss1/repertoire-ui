@@ -1,5 +1,4 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Observable } from 'rxjs';
 import { PaginatedResponse } from '../../models/interfaces/base-entity.model';
 import { ContactModel, ContactRequestDTO } from '../../models/interfaces/contact-model';
 import { GlobalConstant } from '../../constants/global.constant';

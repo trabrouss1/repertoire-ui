@@ -1,6 +1,5 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Field } from '@angular/forms/signals';
-import { ContactList } from '../contact-list/contact-list';
 
 @Component({
   selector: 'app-new-contact',
@@ -25,7 +24,6 @@ export class NewContact {
   onSubmit(event: Event) {
     event.preventDefault();
     this.submitForm.emit(event);
-    // this.contactList.getAllContacts();
   }
 
 }

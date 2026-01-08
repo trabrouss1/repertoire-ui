@@ -15,8 +15,6 @@ import { NewContact } from "./pages/contact/new-contact/new-contact";
 })
 export class App implements OnInit {
 
-  protected readonly title = signal('repertoire-ui');
-
   isModalOpen = signal(false);
   editingId = signal<number | null>(null);
 
