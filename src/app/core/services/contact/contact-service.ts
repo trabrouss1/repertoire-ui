@@ -13,16 +13,24 @@ export class ContactService {
 
   private readonly _contacts = signal<ContactModel[]>([]);
   readonly contacts = this._contacts.asReadonly();
+  isLoading = signal(true);
 
   loadContacts(): void {
+    this.isLoading.set(true);
     this.masterService
       .get<PaginatedResponse<ContactModel>>(
         GlobalConstant.API_END_POINT.CONTACT.CONTROLLER,
         GlobalConstant.API_END_POINT.CONTACT.METHOD.GET
       )
       .subscribe({
-        next: res => this._contacts.set(res.data),
-        error: err => console.error(err)
+        next: (res) => {
+          this._contacts.set(res.data);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error("erreur lors de chargement " + err.error.message)
+          this.isLoading.set(false);
+        }
       });
   }
 
@@ -50,9 +58,12 @@ export class ContactService {
         contactRequestDTO
       )
       .subscribe({
-        next: () => this.loadContacts(),
+        next: () => {
+          this.loadContacts(),
+          this.isLoading.set(false);
+        },
         error: (error) => {
-          console.log("Une erreur s'est produite lors de la soumission du formulaire de creation de contact", error.error.message);      
+          console.log("Une erreur s'est produite lors de la soumission du formulaire de creation de contact", error.error.message); 
         }
       });
   }

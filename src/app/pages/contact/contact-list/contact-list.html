@@ -1,7 +1,33 @@
 <div id="contactsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
   @for (contact of contacts(); track contact.id) {
   <div
-    class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 group animate-fadeIn">
+    class="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 group animate-fadeIn">
+
+    <!-- Skeleton superposé -->
+    @if (isLoading()) {
+      <div class="absolute inset-0 z-10 bg-white/70 flex flex-col animate-pulse p-6 rounded-2xl space-y-4">
+
+        <div class="flex items-start space-x-4">
+          <ngx-skeleton-loader appearance="circle" class="w-16 h-16 rounded-full"></ngx-skeleton-loader>
+          <div class="flex flex-col space-y-2">
+            <ngx-skeleton-loader class="w-32 h-5 rounded"></ngx-skeleton-loader>
+            <ngx-skeleton-loader class="w-20 h-4 rounded"></ngx-skeleton-loader>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <ngx-skeleton-loader class="w-full h-4 rounded"></ngx-skeleton-loader>
+          <ngx-skeleton-loader class="w-5/6 h-4 rounded"></ngx-skeleton-loader>
+        </div>
+
+        <div class="flex space-x-2 pt-4">
+          <ngx-skeleton-loader class="flex-1 h-8 rounded-lg"></ngx-skeleton-loader>
+          <ngx-skeleton-loader class="flex-1 h-8 rounded-lg"></ngx-skeleton-loader>
+        </div>
+      </div>
+    }
+
+    <!-- Carte réelle -->
     <div class="p-6">
       <div class="flex items-start justify-between mb-4">
         <div class="flex items-center space-x-4">
