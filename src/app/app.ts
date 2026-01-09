@@ -1,11 +1,12 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Header } from "./shared/reusableComponents/header/header";
-import { form } from '@angular/forms/signals';
-import { ContactModel } from './core/models/interfaces/contact-model';
+import { Header } from "./shared/reusableComponents/headers/header";
+import { form, submit } from '@angular/forms/signals';
+import { ContactRequestDTO, contactSchema, getInitialValue } from './core/models/interfaces/contact-model';
 import { ContactList } from "./pages/contact/contact-list/contact-list";
 import { ContactService } from './core/services/contact/contact-service';
 import { SearhBar } from "./shared/reusableComponents/searh-bar/searh-bar";
 import { NewContact } from "./pages/contact/new-contact/new-contact";
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -18,18 +19,9 @@ export class App implements OnInit {
   isModalOpen = signal(false);
   editingId = signal<number | null>(null);
 
-  protected contactModel = signal<ContactModel>({
-    nom: '',
-    prenom: '',
-    email: '',
-    numero: '',
-    image: '',
-    entreprise: '',
-    date_annniversaire: '',
-    lieu: ''
-  })
+  protected contactModel = signal<ContactRequestDTO>(getInitialValue())
 
-  protected readonly contactForm = form(this.contactModel);
+  protected readonly contactForm = form(this.contactModel, contactSchema);
   private readonly contactService = inject(ContactService)
 
   searchText = ''
@@ -50,11 +42,23 @@ export class App implements OnInit {
   }
 
   searchElement(){
-    console.log("Element transmit");
+    console.log("Element transmit " + this.searchText);
   }
 
   onSubmit(event: Event) {
     event.preventDefault();
-    this.contactService.createContact(this.contactModel());
+
+    submit(this.contactForm, async () => {
+      const contactData = this.contactForm().value();
+      try {
+        await lastValueFrom(this.contactService.createContacts(contactData));
+        this.contactForm().reset()
+        this.contactForm().value.set(getInitialValue());
+        this.contactService.loadContacts();
+      } catch (error) {
+        console.log(error);
+      }
+    })
+
   }
 }

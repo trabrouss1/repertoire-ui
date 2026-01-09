@@ -42,13 +42,13 @@ export class ContactService {
   //     );
   // }
 
-  // createContact(contactRequestDTO: ContactRequestDTO){
-  //   return this.masterService.create<void>(
-  //     GlobalConstant.API_END_POINT.CONTACT.CONTROLLER,
-  //     GlobalConstant.API_END_POINT.CONTACT.METHOD.CREATE,
-  //     contactRequestDTO
-  //   )
-  // }
+  createContacts(contactRequestDTO: ContactRequestDTO){
+    return this.masterService.create<void>(
+      GlobalConstant.API_END_POINT.CONTACT.CONTROLLER,
+      GlobalConstant.API_END_POINT.CONTACT.METHOD.CREATE,
+      contactRequestDTO
+    )
+  }
 
   createContact(contactRequestDTO: ContactRequestDTO): void {
     this.masterService
