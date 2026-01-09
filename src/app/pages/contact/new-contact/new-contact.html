@@ -68,7 +68,11 @@
           (click)="fermerModal()"
           [disabled]="contactForm().invalid() || contactForm().submitting()"
           class="flex-1 px-6 py-3 bg-linear-to-r from-indigo-500 to-purple-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 font-medium">
-          Enregistrer
+          @if(contactForm().invalid() || contactForm().submitting()){
+            Enregistrer
+          }@else {
+            Enregistrement en cours...
+          }
         </button>
         <button class="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 font-medium">
           Annuler
